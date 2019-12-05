@@ -21,6 +21,7 @@ CREATE TABLE `problems` (
   `pid` int NOT NULL PRIMARY KEY ,
   `code` varchar(100) NOT NULL,
   `link` varchar(200) NOT NULL,
+  `title` VARCHAR(50) NOT NULL,
   `author` varchar(50) NOT NULL,
   `body` text NOT NULL,
   `score` int NOT NULL,
