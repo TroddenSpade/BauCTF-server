@@ -1,10 +1,9 @@
 <?php
 
-header("Access-Control-Allow-Origin: http://localhost:8080");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS");
-header("Access-Control-Max-Age: 3600");
-header("Access-Control-Allow-Headers: Origin,Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+header('Access-Control-Allow-Origin: https://samnotsum.kntuctf.ir');
+header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
 
 include_once 'config/config.php';
 global $mysqli;
@@ -24,7 +23,7 @@ if( !empty($token) ){
     $result = $mysqli->query("SELECT token FROM users WHERE token='$token' LIMIT 1");
 
     if($result->num_rows>0){
-        $q = $mysqli->query("SELECT * FROM problems WHERE state='$state' ORDER BY score ASC");
+        $q = $mysqli->query("SELECT * FROM problems WHERE state='$state' ORDER BY pid ASC");
         if($q->num_rows>0){
             $problems = array();
             while($row = $q->fetch_assoc()) {
