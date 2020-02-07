@@ -30,8 +30,13 @@ if (!empty($token) &&
         $uid = $user_row['uid'];
         if ($mysqli->query("INSERT INTO submission(uid,pid,code) VALUES ('$uid','$pid','$ctf')")
             === TRUE) {
+            $get_problem_result = $mysqli->query("SELECT pid FROM problems WHERE pid = '$pid' AND code = '$ctf' LIMIT 1");
+            if($problems = $get_problem_result->fetch_assoc()){
+                $response['msg'] = "Correct Code.";
+            }else{
+                $response['msg'] = "Wrong Code!";
+            }
             http_response_code(200);
-            $response['msg'] = "Code has been submitted successfully.";
         } else {
             http_response_code(400);
             $response['error'] = "Error Submitting: " . $mysqli->error;;
