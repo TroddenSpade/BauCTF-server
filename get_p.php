@@ -1,9 +1,10 @@
 <?php
 
+header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-header('Access-Control-Allow-Origin: https://samnotsum.kntuctf.ir');
-header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-header('Access-Control-Allow-Headers: Origin, Content-Type, X-Auth-Token');
+header("Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS");
+header("Access-Control-Max-Age: 3600");
+header("Access-Control-Allow-Headers: Origin,Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 include_once 'config/config.php';
 global $mysqli;
@@ -20,8 +21,9 @@ $state = $mysqli->escape_string($data['state']);
 $response = array();
 
 if( !empty($token) ){
-    $result = $mysqli->query("SELECT token FROM users WHERE token='$token' LIMIT 1");
-
+    
+    //add open = 1 for accessing Open Users
+    $result = $mysqli->query("SELECT uid FROM users WHERE token='$token'  LIMIT 1");
     if($result->num_rows>0){
         $q = $mysqli->query("SELECT * FROM problems WHERE state='$state' ORDER BY pid ASC");
         if($q->num_rows>0){
@@ -38,11 +40,11 @@ if( !empty($token) ){
             }
         }else{
             http_response_code(400);
-            $response['error'] = "q doesnt work !";
+            $response['error'] = "can not get the Challenges !";
         }
     }else{
         http_response_code(401);
-        $response['error'] = "Access Unauthorized.";
+        $response['error'] = "you cant access the challenges right now !";
     }
 
 }else{
