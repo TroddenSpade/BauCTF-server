@@ -17,3 +17,11 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::post('/register','Api\AuthController@register');
+Route::post('/login','Api\AuthController@login');
+
+Route::get('/email/resend','Api\VerificationController@resend')->name('verification.resend');
+Route::get('/email/verify/{id}/{hash}','Api\VerificationController@verify')->name('verification.verify');
+
+//Route::get('/event','EventController@index')->middleware('auth:api','verified');
