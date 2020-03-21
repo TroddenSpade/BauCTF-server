@@ -6,9 +6,12 @@
 .env
 .env.backup
 .phpunit.result.cache
-.DS_store
-.idea
 Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
+_ide_helper.php
+.phpstorm.meta.php
+.DS_store
+node_modules
+.idea
