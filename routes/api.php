@@ -14,14 +14,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
+//login
 Route::post('/register','Api\AuthController@register');
 Route::post('/login','Api\AuthController@login');
+Route::post('/login/refresh', 'Api\AuthController@refresh');
+Route::post('/logout','Api\AuthController@logout')->middleware('auth:api');
 
+Route::post('/password/email','Api\ForgotPasswordController@sendResetLinkEmail');
+Route::post('/password/reset','Api\ResetPasswordController@reset');
+
+//email verification
 Route::get('/email/resend','Api\VerificationController@resend')->name('verification.resend');
 Route::get('/email/verify/{id}/{hash}','Api\VerificationController@verify')->name('verification.verify');
 
-//Route::get('/event','EventController@index')->middleware('auth:api','verified');
+//submission
+Route::post('/submit','SubmissionController@store');//->middleware('auth:api','verified');
+
+//leaderboard
+Route::get('/leaderboard', 'LeaderboardController@index');
+
+//challenges
+Route::get('/challenges','ChallengeController@index');//->middleware('auth:api','verified');
+
+
+Route::post('/test','Api\AuthController@test');
