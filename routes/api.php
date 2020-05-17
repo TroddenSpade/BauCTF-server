@@ -18,23 +18,29 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register','Api\AuthController@register');
 Route::post('/login','Api\AuthController@login');
 Route::post('/login/refresh', 'Api\AuthController@refresh');
-Route::post('/logout','Api\AuthController@logout')->middleware('auth:api');
+Route::post('/logout','Api\AuthController@logout')
+    ->middleware('auth:api');
 
 Route::post('/password/email','Api\ForgotPasswordController@sendResetLinkEmail');
 Route::post('/password/reset','Api\ResetPasswordController@reset');
 
 //email verification
-Route::get('/email/resend','Api\VerificationController@resend')->name('verification.resend');
-Route::get('/email/verify/{id}/{hash}','Api\VerificationController@verify')->name('verification.verify');
+Route::get('/email/resend','Api\VerificationController@resend')
+    ->name('verification.resend');
+Route::get('/email/verify/{id}/{hash}','Api\VerificationController@verify')
+    ->name('verification.verify');
 
 //submission
-Route::post('/submit','SubmissionController@store');//->middleware('auth:api','verified');
+Route::post('/submit','SubmissionController@store')
+    ->middleware('auth:api','verified','participate');
 
 //leaderboard
-Route::get('/leaderboard', 'LeaderboardController@index');
+Route::get('/scoreboard', 'ScoreboardController@index');
 
 //challenges
-Route::get('/challenges','ChallengeController@index');//->middleware('auth:api','verified');
+Route::get('/challenges','ChallengeController@index')
+    ->middleware('auth:api','verified','participate');
 
-
-Route::post('/test','Api\AuthController@test');
+//participants
+Route::post('/participants','ParticipantController@store')
+    ->middleware('auth:api','verified');
