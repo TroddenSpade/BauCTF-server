@@ -19,6 +19,7 @@ class CreateParticipantsTable extends Migration
             $table->foreignId('e_id');
             $table->foreign('u_id')->references('id')->on('users');
             $table->foreign('e_id')->references('id')->on('events');
+            $table->unique(['u_id','e_id']);
             $table->timestamps();
         });
     }

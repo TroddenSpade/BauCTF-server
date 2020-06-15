@@ -18,8 +18,9 @@ class CreateChallengesTable extends Migration
             $table->foreignId('e_id');
             $table->foreign('e_id')->references('id')->on('events');
             $table->timestamps();
-            $table->string('flag',32);
+            $table->char('flag',128);
             $table->string('attachment',200);
+            $table->tinyInteger('type');
             $table->string('title');
             $table->string('author');
             $table->string('body');
