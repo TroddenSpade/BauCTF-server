@@ -20,7 +20,7 @@ class CreateChallengesTable extends Migration
             $table->timestamps();
             $table->char('flag',128);
             $table->string('attachment',200);
-            $table->tinyInteger('type');
+            $table->tinyInteger('category');
             $table->string('title');
             $table->string('author');
             $table->string('body');
