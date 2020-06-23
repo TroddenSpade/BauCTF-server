@@ -33,9 +33,12 @@ Route::get('/email/verify/{id}/{hash}','Api\VerificationController@verify')
 //submission
 Route::post('/submit','SubmissionController@store')
     ->middleware('auth:api','verified','participate');
+Route::get('/submissions','SubmissionController@index')
+    ->middleware('auth:api','verified');
 
-//leaderboard
+//scoreboard
 Route::get('/scoreboard', 'ScoreboardController@index');
+Route::post('/scoreboard', 'ScoreboardController@store');
 
 //challenges
 Route::get('/challenges','ChallengeController@index')
@@ -43,4 +46,17 @@ Route::get('/challenges','ChallengeController@index')
 
 //participants
 Route::post('/participants','ParticipantController@store')
+    ->middleware('auth:api','verified');
+
+//events
+Route::get('/event/latest','EventController@latest');
+Route::get('/events','EventController@index')
+    ->middleware('auth:api','verified');
+
+//leaderboard
+Route::get('/leaderboard','LeaderboardController@index')
+    ->middleware('auth:api','verified');
+
+//user
+Route::get('/user','UserController@index')
     ->middleware('auth:api','verified');
