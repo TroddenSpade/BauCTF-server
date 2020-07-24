@@ -37,8 +37,9 @@ Route::get('/submissions','SubmissionController@index')
     ->middleware('auth:api','verified');
 
 //scoreboard
-Route::get('/scoreboard', 'ScoreboardController@index');
-Route::post('/scoreboard', 'ScoreboardController@store');
+Route::get('/scoreboard/{id}', 'ScoreboardController@show');
+// Route::post('/scoreboard', 'ScoreboardController@store');
+Route::get('/scoreboard/standings', 'ScoreboardController@standings');
 
 //challenges
 Route::get('/challenges','ChallengeController@index')
@@ -50,6 +51,7 @@ Route::post('/participants','ParticipantController@store')
 
 //events
 Route::get('/event/latest','EventController@latest');
+Route::get('/event/{id}', 'EventController@show');
 Route::get('/events','EventController@index')
     ->middleware('auth:api','verified');
 
