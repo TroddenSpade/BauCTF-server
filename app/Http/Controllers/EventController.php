@@ -22,6 +22,14 @@ class EventController extends Controller
         return response($events,200);
     }
 
+
+    public function show($id){
+        $event = Event::
+            where('id',$id)
+            ->first();
+        return response($event,200);
+    }
+
     public static function getLatestEvent(){
         $event = Event::whereDate('end','>=',now())
             ->orderBy('id','asc')
