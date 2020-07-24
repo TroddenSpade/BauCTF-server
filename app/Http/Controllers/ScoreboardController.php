@@ -10,10 +10,19 @@ use Illuminate\Http\Request;
 
 class ScoreboardController extends Controller
 {
-    public function index()
+    public function show($id)
     {
-        \Cache::clear();
-        return response(Repository::scoreboard(), 200);
+        // \Cache::clear();
+        $event = EventController::getLatestEvent();
+        if($id == $event->id){
+            if(is_null($event->scoreboard))
+                return response(Repository::scoreboard(), 200);
+            else
+                return response($event->scoreboard, 200);
+        }
+        $scoreboard = Event::select('scoreboard')->where('id',$id)->get();
+
+        return response($scoreboard, 200);
     }
 
     public function store()
@@ -40,6 +49,31 @@ class ScoreboardController extends Controller
         Event::where('id', $event->id)->update(['scoreboard' => $scoreboard]);
 
         return response(['message'=>'saved'],200);
+    }
+
+    public function standings()
+    {
+        $scoreboard = Repository::scoreboard();
+        $participants = $scoreboard['participants']->toArray();
+        usort($participants, function ($a, $b) {
+            if ($a->score > $b->score) return -1;
+            if ($b->score > $a->score) return 1;
+            if ($a->time > $b->time) return 1;
+            if ($a->time < $b->time) return -1;
+            return 0;
+        });
+
+        $standings = [];
+
+        foreach($participants as $i=>$p){
+            $t = (object)[];
+            $t->pos = $i + 1;
+            $t->team = $p->name;
+            $t->score = $p->score;
+            array_push($standings, $t);
+        }
+
+        return response(['standings'=> $standings],200);
     }
 
     public static function createScoreboard()
