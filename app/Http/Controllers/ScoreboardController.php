@@ -13,16 +13,25 @@ class ScoreboardController extends Controller
     public function show($id)
     {
         // \Cache::clear();
-        $event = EventController::getLatestEvent();
-        if($id == $event->id){
-            if(is_null($event->scoreboard))
-                return response(Repository::scoreboard(), 200);
-            else
-                return response($event->scoreboard, 200);
+        if($id == 0){
+            $event = EventController::getLatestEvent();
+            $event->no = Event::count();
+            if(is_null($event->scoreboard)){
+                $event->scoreboard = Repository::scoreboard();
+                return response($event, 200);
+            }else{
+                $event->scoreboard = json_decode($event->scoreboard);
+                return response($event, 200);
+            }
         }
-        $scoreboard = Event::select('scoreboard')->where('id',$id)->get();
-
-        return response($scoreboard, 200);
+        $event = Event::where('id',$id)->first();
+        if(is_null($event)){
+            return response(['message' => 'Scoreboard not Found.'], 404);
+        }
+        $event->scoreboard = json_decode($event->scoreboard);
+        $event->no = Event::count();
+        
+        return response($event, 200);
     }
 
     public function store()
