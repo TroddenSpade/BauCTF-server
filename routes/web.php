@@ -14,5 +14,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return \File::get('....public_html/index.html');
+});
+
+Route::get('/scoreboard/{id}', function () {
+    return \File::get('....public_html/scoreboard/_id.html');
 });
