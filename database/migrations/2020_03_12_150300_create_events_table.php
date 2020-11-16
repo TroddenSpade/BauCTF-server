@@ -19,6 +19,7 @@ class CreateEventsTable extends Migration
             $table->string('type');
             $table->string('format');
             $table->boolean('open');
+            $table->boolean('record');
             $table->char('code',100);
             $table->dateTime('start');
             $table->dateTime('end');
