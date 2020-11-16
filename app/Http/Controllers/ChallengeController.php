@@ -16,7 +16,7 @@ class ChallengeController extends Controller
 
         $challenges = Challenge::
             select('challenges.*',
-                \DB::raw('COUNT(DISTINCT submissions.u_id , challenges.id) as total'))
+                \DB::raw('CAST(COUNT(DISTINCT submissions.u_id , challenges.id) as UNSIGNED) as total'))
             ->from('challenges')
             ->leftJoin('submissions',function ($join){
                 $join
@@ -52,6 +52,22 @@ class ChallengeController extends Controller
                 $c->solved = 1;
             else    $c->solved = 0;
         }
+
+        return response($challenges, 200);
+    }
+
+    public function show($cat){
+        $challenges = Challenge::
+            select('challenges.*','events.name','events.record')
+            ->leftJoin('events',function($join){
+                $join
+                    ->on('challenges.e_id', '=', 'events.id');
+            })
+            ->where([
+                ['events.record', '=', '1'],
+                ['challenges.category', '=', $cat]
+                ])
+            ->get();
 
         return response($challenges, 200);
     }

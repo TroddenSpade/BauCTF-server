@@ -44,6 +44,8 @@ Route::get('/scoreboard/standings', 'ScoreboardController@standings');
 //challenges
 Route::get('/challenges','ChallengeController@index')
     ->middleware('auth:api','verified','participate');
+Route::get('/challenges/{cat}','ChallengeController@show');
+    // ->middleware('auth:api','verified');
 
 //participants
 Route::post('/participants','ParticipantController@store')
