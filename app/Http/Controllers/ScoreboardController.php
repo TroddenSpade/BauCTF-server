@@ -12,7 +12,7 @@ class ScoreboardController extends Controller
 {
     public function show($id)
     {
-        // \Cache::clear();
+        \Cache::clear();
         if($id == 0){
             $event = EventController::getLatestEvent();
             $event->no = Event::count();
@@ -125,7 +125,7 @@ class ScoreboardController extends Controller
 
         $submissions = DB::select(DB::raw($submissions_query));
 
-        $decay = ceil(count($participants) * 1 / 4) | 1;
+        $decay = ceil(count($participants) * 1 / 3) | 1;
         $minus = ($event->min_score - $event->max_score) / self::growthFunction($decay);
         foreach ($challenges as $c) {
             $c->score = max(
@@ -154,6 +154,7 @@ class ScoreboardController extends Controller
 
     public static function growthFunction($x)
     {
+        if($x == 1) return 0;
         return $x + $x ** 1.5;
     }
 }
